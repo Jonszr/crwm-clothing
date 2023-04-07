@@ -1,12 +1,11 @@
 import { useState } from "react";
 import {
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
 
-import './sign-in-form.styles.scss';
+import "./sign-in-form.styles.scss";
 
 import Button from "../button/button.component";
 const defaultFormFields = {
@@ -14,45 +13,39 @@ const defaultFormFields = {
   password: "",
 };
 
-
 const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   }; // useEffect(async () => {
-    //   const response = await getRedirectResult(auth);
-    //   if(response){
-    //       const userDocRef = await createUserDocumentFromAuth(response.user);
-    //   }
-    // }, []);
-    const signInWithGoogle = async () => {
-      const { user } = await signInWithGooglePopup();
-      await createUserDocumentFromAuth(user);
-    };
-    // const logGoogleRedirectUser = async () => {
-    //   const { user } = await signInWithGoogleRedirect();
-    //   console.log({ user });
-    // };
-
-
+  //   const response = await getRedirectResult(auth);
+  //   if(response){
+  //       const userDocRef = await createUserDocumentFromAuth(response.user);
+  //   }
+  // }, []);
+  const signInWithGoogle = async () => {
+    await signInWithGooglePopup();
+  };
+  // const logGoogleRedirectUser = async () => {
+  //   const { user } = await signInWithGoogleRedirect();
+  //   console.log({ user });
+  // };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     try {
-      const response = await signInAuthUserWithEmailAndPassword(email, password);
-      console.log(response);
+      await signInAuthUserWithEmailAndPassword(email, password);
       resetFormFields();
     } catch (error) {
-      switch(error.code){
-        case 'auth/wrong-password':
-          alert('incorrect password for email!');
+      switch (error.code) {
+        case "auth/wrong-password":
+          alert("incorrect password for email!");
           break;
-        case 'auth/user-not-found' :
-          alert('no user associated with this email');
+        case "auth/user-not-found":
+          alert("no user associated with this email");
           break;
         default:
           console.log(error);
@@ -64,20 +57,11 @@ const SignInForm = () => {
     setFormFields({ ...formFields, [name]: value });
   };
 
-
-
-
-
-
   return (
-    <div className='sign-up-container'>
-        <h2>Already have an account?</h2>
+    <div className="sign-up-container">
+      <h2>Already have an account?</h2>
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
-
-
-
-
         <FormInput
           label="Email"
           type="email"
@@ -86,7 +70,6 @@ const SignInForm = () => {
           name="email"
           value={email}
         />
-
 
         <FormInput
           label="Password"
@@ -98,12 +81,12 @@ const SignInForm = () => {
         />
 
         <div className="buttons-container">
-        <Button  type="submit"> Sign in</Button>
-        <Button type='button' buttonType='google' onClick={signInWithGoogle}> Google sign in </Button>
+          <Button type="submit"> Sign in</Button>
+          <Button type="button" buttonType="google" onClick={signInWithGoogle}>
+            {" "}
+            Google sign in{" "}
+          </Button>
         </div>
-
-
-        
       </form>
     </div>
   );
