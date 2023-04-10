@@ -4,9 +4,9 @@ import './product-card.styles.scss';
 import { CartContext } from '../../contexts/cart.context';
 const ProductCard = ({product}) => {
   const {name, price, imageUrl} = product;
-  const {products,setProducts} = useContext(CartContext);
+  const {addItemToCart} = useContext(CartContext);
   const AddClickHandler = ()=>{
-    setProducts([...products,product]);
+    addItemToCart(product);
   }
 
   return (
